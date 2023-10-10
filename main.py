@@ -1,4 +1,5 @@
 import arcade
+import random
 
 # Windows properties
 SCREEN_WIDTH = 1000
@@ -12,7 +13,8 @@ TILE_SCALING = 0.5
 # Movement speed of player, in pixels per frame
 PLAYER_MOVEMENT_SPEED = 5
 GRAVITY = 1
-PLAYER_JUMP_SPEED = 30
+PLAYER_JUMP_SPEED = 25
+
 
 class Game(arcade.Window):
     def __init__(self):
@@ -33,6 +35,9 @@ class Game(arcade.Window):
 
         self.score = 0
 
+        # Next platform height
+        self.next_platform_height = 100
+        
         # Background window color
         arcade.set_background_color((22, 107, 193))
 
@@ -59,23 +64,23 @@ class Game(arcade.Window):
             wall.center_y = 32
             self.scene.add_sprite("Walls", wall)
 
-        """TODO: create a function to add platforms in y axis, in random position"""
-        # Platforms in y axis
-        for y in range(0, 1250, 250):
-            if y < 150:
-                continue
-            
-            wall = arcade.Sprite(":resources:images/tiles/grassMid.png", TILE_SCALING)
-            wall.center_x = 32
-            wall.center_y = y
-            self.scene.add_sprite("Walls", wall)
+        # """TODO: create a function to add platforms in y axis, in random position"""
+        # # Platforms in y axis
+        # for y in range(0, 1250, 250):
+        #     if y < 150:
+        #         continue
 
+            
+            
+        #     wall = arcade.Sprite(":resources:images/tiles/grassMid.png", TILE_SCALING)
+        #     wall.center_x = 32
+        #     wall.center_y = y
+        #     self.scene.add_sprite("Walls", wall)
 
         # Initialize physics engine to sprites        
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.player_sprite, gravity_constant=GRAVITY, walls=self.scene["Walls"]
         )
-
 
         # self.camera = arcade.Camera(self.width, self.height)
         # self.gui_camera = arcade.Camera(self.width, self.height)
@@ -112,11 +117,38 @@ class Game(arcade.Window):
         elif key == arcade.key.RIGHT or key == arcade.key.D:
             self.player_sprite.change_x = 0
 
+    def add_platform(self):
+        """Generates a new platform and adds it to the scene"""
+        # Create a new platform sprite
+        count_platforms = random.randint(2, 4)
+        platform_y_axis = self.player_sprite.center_y + random.randint(20, 40)
+
+        for _x in range(count_platforms):
+            platform = arcade.Sprite(":resources:images/tiles/grassMid.png", TILE_SCALING)
+            # Random position
+            platform.center_x = random.randint(100, SCREEN_WIDTH)
+            platform.center_y = platform_y_axis # self.player_sprite.center_y + random.randint(20, 40)
+
+            # Add the platform to the scene
+            self.scene.add_sprite("Walls", platform)
+
+    def update(self, delta_time):
+        """Updates the game"""
+        # Check if the player has reached a certain height
+        if self.player_sprite.center_y > self.next_platform_height:
+            # Generate a new platform and add it to the scene
+            self.add_platform()
+
+            # Increase the height for the next platform
+            self.next_platform_height += random.randint(100, 200)
+
+        # Update the physics engine
+        self.physics_engine.update()
+    
     def on_update(self, delta_time):
         """Movement and game logic"""
         # Move the player with the physics engine
         self.physics_engine.update()
-
 
 
 def main():
