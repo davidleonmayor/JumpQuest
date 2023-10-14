@@ -8,6 +8,9 @@ juego de plataforma en el cual inicias en el suelo y luego el personaje comenza 
 - enemigos repartidad por el mapa
 - monedas repartidad por el mapa
 
+### Platform Functionality
+Platforms are created from bottom to top with a step of "n" pixels, so that the player can climb. From there on, every time the player surpasses "n" pixels in the "y" coordinate, another platform is added.
 
-### Funcionaminto de plataformas
-Se crean plataformas de abajo ha arriba con un paso de "n" px, para que el jugador escale. De hay en adelante, cada que el jugador pase supere en "n" px en cordenada "y" se agregara otra plataforma
+
+
+- amparo no deve, pero pagara por las que se llebara

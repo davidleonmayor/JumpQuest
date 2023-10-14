@@ -12,8 +12,8 @@ TILE_SCALING = 0.5
 
 # Movement speed of player, in pixels per frame
 PLAYER_MOVEMENT_SPEED = 8
-GRAVITY = 3
-PLAYER_JUMP_SPEED = 40
+GRAVITY = 1
+PLAYER_JUMP_SPEED = 22
 
 class Game(arcade.Window):
     def __init__(self):
@@ -63,7 +63,7 @@ class Game(arcade.Window):
 
         # Adding initial platforms from bottom to top
         for y_position in range(32, SCREEN_HEIGHT, 200):  # 32 is the height of the first platform
-            quantity_x = random.randint(SCREEN_WIDTH/2-250, SCREEN_WIDTH/2+250) # random x axis position. (repeating code, fix it)
+            quantity_x = random.randint(SCREEN_WIDTH/2-230, SCREEN_WIDTH/2+230) # random x axis position. (repeating code, fix it)
             self.create_platform(y_axis=y_position, x_axis=quantity_x, quantity=(2, 4))
             # self.last_platform_y = y_position
 
@@ -115,13 +115,11 @@ class Game(arcade.Window):
             self.player_sprite.change_x = 0
 
     def add_platform(self):
-        # Generate plarforms each n pixels
         player_y = self.player_sprite.center_y
         if player_y > self.next_platform_height:
-            # Tomas la posicion en el eje y del ultimo bloque de plataformas
-            quantity_y = self.last_platform_y = self.scene["Walls"][-1].center_y + 200
-            # quantity_y = self.last_platform_y+200 # 200 is the distance between platforms
-            quantity_x = random.randint(SCREEN_WIDTH/2-250, SCREEN_WIDTH/2+250)
+            # Genere platform after the last platform
+            quantity_y = self.last_platform_y = self.scene["Walls"][-1].center_y + self.next_platform_height # get the last platform y axis
+            quantity_x = random.randint(SCREEN_WIDTH/2-230, SCREEN_WIDTH/2+230)
             self.create_platform(y_axis=quantity_y, x_axis=quantity_x, quantity=(2, 4))
 
 def main():
