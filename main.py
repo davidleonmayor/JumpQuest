@@ -24,7 +24,6 @@ class Game(arcade.Window):
         self.player_sprite = None
         self.scene = None
         self.next_platform_height = 200
-        self.last_platform_y = 0
 
         # Physics
         self.physics_engine = None
@@ -36,6 +35,10 @@ class Game(arcade.Window):
         # Camera to draw text
         self.gui_camera = None
         self.score = 0
+
+        # Songs
+        self.jump_sound = arcade.load_sound(":resources:sounds/jump1.wav")
+        # self.
 
         arcade.set_background_color((22, 107, 193))
 
@@ -65,7 +68,8 @@ class Game(arcade.Window):
         for y_position in range(32, SCREEN_HEIGHT, 200):  # 32 is the height of the first platform
             quantity_x = random.randint(SCREEN_WIDTH/2-230, SCREEN_WIDTH/2+230) # random x axis position. (repeating code, fix it)
             self.create_platform(y_axis=y_position, x_axis=quantity_x, quantity=(2, 4))
-            # self.last_platform_y = y_position
+
+        
 
         # Set up the physics engine
         self.physics_engine = arcade.PhysicsEnginePlatformer(
@@ -103,6 +107,7 @@ class Game(arcade.Window):
         if key == arcade.key.UP or key == arcade.key.W:
             if self.physics_engine.can_jump():
                 self.player_sprite.change_y = PLAYER_JUMP_SPEED
+                arcade.play_sound(self.jump_sound)
         elif key == arcade.key.LEFT or key == arcade.key.A:
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT or key == arcade.key.D:
@@ -118,7 +123,7 @@ class Game(arcade.Window):
         player_y = self.player_sprite.center_y
         if player_y > self.next_platform_height:
             # Genere platform after the last platform
-            quantity_y = self.last_platform_y = self.scene["Walls"][-1].center_y + self.next_platform_height # get the last platform y axis
+            quantity_y = self.scene["Walls"][-1].center_y + self.next_platform_height # get the last platform y axis
             quantity_x = random.randint(SCREEN_WIDTH/2-230, SCREEN_WIDTH/2+230)
             self.create_platform(y_axis=quantity_y, x_axis=quantity_x, quantity=(2, 4))
 

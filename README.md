@@ -10,7 +10,3 @@ juego de plataforma en el cual inicias en el suelo y luego el personaje comenza 
 
 ### Platform Functionality
 Platforms are created from bottom to top with a step of "n" pixels, so that the player can climb. From there on, every time the player surpasses "n" pixels in the "y" coordinate, another platform is added.
-
-
-
-- amparo no deve, pero pagara por las que se llebara
