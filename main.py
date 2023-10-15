@@ -69,8 +69,6 @@ class Game(arcade.Window):
             quantity_x = random.randint(SCREEN_WIDTH/2-230, SCREEN_WIDTH/2+230) # random x axis position. (repeating code, fix it)
             self.create_platform(y_axis=y_position, x_axis=quantity_x, quantity=(2, 4))
 
-        
-
         # Set up the physics engine
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.player_sprite, gravity_constant=GRAVITY, walls=self.scene["Walls"]
@@ -84,7 +82,6 @@ class Game(arcade.Window):
             wall.center_y = y_axis
             self.scene.add_sprite("Walls", wall)
             x_movement_block_size += wall.width
-
 
     def on_draw(self):
         self.clear()
