@@ -117,12 +117,14 @@ class Game(arcade.Window):
             self.player_sprite.change_x = 0
 
     def add_platform(self):
-        player_y = self.player_sprite.center_y
-        if player_y > self.next_platform_height:
+        if self.player_sprite.center_y > self.next_platform_height: # IF player is above the next platform
             # Genere platform after the last platform
+            init_x = random.randint(0, SCREEN_WIDTH/2)
+            random_jump = random.randint(2, 4) * 200
             quantity_y = self.scene["Walls"][-1].center_y + self.next_platform_height # get the last platform y axis
-            quantity_x = random.randint(SCREEN_WIDTH/2-230, SCREEN_WIDTH/2+230)
-            self.create_platform(y_axis=quantity_y, x_axis=quantity_x, quantity=(2, 4))
+            for quantity_x in range(init_x, SCREEN_WIDTH, random_jump):
+                # quantity_x = random.randint(SCREEN_WIDTH/2-230, SCREEN_WIDTH/2+230)
+                self.create_platform(y_axis=quantity_y, x_axis=quantity_x, quantity=(2, 4))
 
 def main():
     window = Game()
