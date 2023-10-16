@@ -38,7 +38,7 @@ class Game(arcade.Window):
 
         # Songs
         self.jump_sound = arcade.load_sound(":resources:sounds/jump1.wav")
-        # self.
+        self.puwerup_sound = arcade.load_sound(":resources:sounds/upgrade1.wav")
 
         arcade.set_background_color((22, 107, 193))
 
@@ -48,6 +48,7 @@ class Game(arcade.Window):
         self.scene.add_sprite_list("Player")
         self.scene.add_sprite_list("Walls", use_spatial_hash=True)
         self.scene.add_sprite_list("Platforms", use_spatial_hash=True)
+        self.scene.add_sprite_list("Powerups", use_spatial_hash=True)
 
         # Set up the Game Camera
         self.camera = arcade.Camera(self.width, self.height)
@@ -93,6 +94,17 @@ class Game(arcade.Window):
         self.physics_engine.update()
         self.center_camera_to_player()
         self.add_platform()
+        # check if player collides with powerup
+        poweup_hit_list = arcade.check_for_collision_with_list(
+            self.player_sprite, self.scene["Powerups"]
+        )
+        
+        # Loop through each coin we hit (if any) and remove it
+        for powerup in poweup_hit_list:
+            # Remove the coin
+            powerup.remove_from_sprite_lists()
+            # Play a sound
+            arcade.play_sound(self.puwerup_sound)
 
     def center_camera_to_player(self):
         screen_center_y = self.player_sprite.center_y - (self.camera.viewport_height / 2)
@@ -124,8 +136,14 @@ class Game(arcade.Window):
             random_jump = random.randint(2, 4) * 200
             quantity_y = self.scene["Platforms"][-1].center_y + self.next_platform_height # get the last platform y axis
             for quantity_x in range(init_x, SCREEN_WIDTH, random_jump):
-                # quantity_x = random.randint(SCREEN_WIDTH/2-230, SCREEN_WIDTH/2+230)
                 self.create_platform(y_axis=quantity_y, x_axis=quantity_x, quantity=(2, 4))
+
+            # Probability of a powerup being generated 2/10
+            if random.randint(1, 10) <= 1:
+                powerup = arcade.Sprite(":resources:images/items/star.png", TILE_SCALING)
+                powerup.center_x = init_x+100
+                powerup.center_y = quantity_y+100
+                self.scene.add_sprite("Powerups", powerup)
 
 def main():
     window = Game()
