@@ -47,6 +47,7 @@ class Game(arcade.Window):
         self.scene = arcade.Scene()
         self.scene.add_sprite_list("Player")
         self.scene.add_sprite_list("Walls", use_spatial_hash=True)
+        self.scene.add_sprite_list("Platforms", use_spatial_hash=True)
 
         # Set up the Game Camera
         self.camera = arcade.Camera(self.width, self.height)
@@ -71,17 +72,17 @@ class Game(arcade.Window):
 
         # Set up the physics engine
         self.physics_engine = arcade.PhysicsEnginePlatformer(
-            self.player_sprite, gravity_constant=GRAVITY, walls=self.scene["Walls"]
+            player_sprite=self.player_sprite, gravity_constant=GRAVITY, platforms=self.scene["Platforms"], walls=self.scene["Walls"]
         )
 
     def create_platform(self, y_axis: int, x_axis: int, quantity: tuple):
         x_movement_block_size = 0
         for _ in range(quantity[0], quantity[1]+1):
-            wall = arcade.Sprite(":resources:images/tiles/grassMid.png", TILE_SCALING)
-            wall.center_x = x_axis + x_movement_block_size
-            wall.center_y = y_axis
-            self.scene.add_sprite("Walls", wall)
-            x_movement_block_size += wall.width
+            platform = arcade.Sprite(":resources:images/tiles/grassMid.png", TILE_SCALING)
+            platform.center_x = x_axis + x_movement_block_size
+            platform.center_y = y_axis
+            self.scene.add_sprite("Platforms", platform)
+            x_movement_block_size += platform.width
 
     def on_draw(self):
         self.clear()
@@ -121,7 +122,7 @@ class Game(arcade.Window):
             # Genere platform after the last platform
             init_x = random.randint(0, SCREEN_WIDTH/2)
             random_jump = random.randint(2, 4) * 200
-            quantity_y = self.scene["Walls"][-1].center_y + self.next_platform_height # get the last platform y axis
+            quantity_y = self.scene["Platforms"][-1].center_y + self.next_platform_height # get the last platform y axis
             for quantity_x in range(init_x, SCREEN_WIDTH, random_jump):
                 # quantity_x = random.randint(SCREEN_WIDTH/2-230, SCREEN_WIDTH/2+230)
                 self.create_platform(y_axis=quantity_y, x_axis=quantity_x, quantity=(2, 4))
