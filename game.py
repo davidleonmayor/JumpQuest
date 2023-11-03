@@ -132,7 +132,7 @@ class MyGame(arcade.Window):
         )
 
 
-    def on_key_press(self, key, modifiers):
+    def on_key_press(self, key):
         """CallSed whenever a key is pressed."""
         if key == arcade.key.UP or key == arcade.key.W:
             if self.physics_engine.can_jump():
@@ -144,7 +144,7 @@ class MyGame(arcade.Window):
             self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
 
 
-    def on_key_release(self, key, modifiers):
+    def on_key_release(self, key):
         """Called when the user releases a key."""
         if key == arcade.key.LEFT or key == arcade.key.A:
             self.player_sprite.change_x = 0
