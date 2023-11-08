@@ -8,7 +8,7 @@ class PlayerSprite(arcade.Sprite):
         self.center_x = PLAYER_INITIAL_POSITION_X
         self.center_y = PLAYER_INITIAL_POSITION_Y
         self.can_jump = CAN_PLAYER_JUMP
-        self.jump_speed = PLAYER_MOVEMENT_SPEED
+        self.jump_speed = PLAYER_MOVEMENT_SPEED * 3
 
     def player_can_jump(self):
         return self.can_jump
@@ -20,10 +20,10 @@ class PlayerSprite(arcade.Sprite):
         self.change_x = PLAYER_MOVEMENT_SPEED
 
     def stop_move_right(self):
-        self.change_x = 0
+        self.change_x = 0 # cero because the player is not moving
 
     def move_left(self):
         self.change_x = -PLAYER_MOVEMENT_SPEED
 
     def stop_move_left(self):
-        self.change_x = 0
+        self.change_x = 0 # cero because the player is not moving

@@ -32,3 +32,6 @@ ___
     - no mivement, static
 
 ___
+
+## TODO:
+- Refactor camera

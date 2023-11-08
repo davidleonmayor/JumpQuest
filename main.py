@@ -1,3 +1,4 @@
+
 import arcade
 import random
 
@@ -17,6 +18,7 @@ PLAYER_MOVEMENT_SPEED = 8
 GRAVITY = 1
 PLAYER_JUMP_SPEED = 22
 
+
 class Game(arcade.Window):
     def __init__(self):
         """Initializes variables and components of the game"""
@@ -24,7 +26,6 @@ class Game(arcade.Window):
 
         # Sprites
         self.player_sprite = None
-        self.player_sprite_test = None # change this to player_sprite when the player_sprite is finished
         self.scene = None
         self.next_platform_height = 200
 
@@ -57,17 +58,8 @@ class Game(arcade.Window):
         self.camera = arcade.Camera(self.width, self.height)
 
         # Add player sprite
-        self.player_sprite = arcade.Sprite(":resources:images/animated_characters/zombie/zombie_idle.png", CHARACTER_SCALING)
-        self.player_sprite.center_x = 500
-        self.player_sprite.center_y = 128
+        self.player_sprite = PlayerSprite()
         self.scene.add_sprite("Player", self.player_sprite)
-
-        # Add player sprite test
-        self.player_sprite_test = PlayerSprite()
-        self.scene.add_sprite("Player", self.player_sprite_test)
-        # self.player_sprite_test.move_right()  # Mueve el sprite a la derecha a una velocidad de 5 píxeles por frame
-        # self.player_sprite_test.move_right()  # Mueve el sprite a la derecha a una velocidad de 5 píxeles por frame
-        # self.player_sprite_test.move_right()  # Mueve el sprite a la derecha a una velocidad de 5 píxeles por frame
 
         # Add walls
         for x in range(0, 1250, 64):
@@ -83,7 +75,7 @@ class Game(arcade.Window):
 
         # Set up the physics engine
         self.physics_engine = arcade.PhysicsEnginePlatformer(
-            player_sprite=self.player_sprite_test, gravity_constant=GRAVITY, platforms=self.scene["Platforms"], walls=self.scene["Walls"]
+            player_sprite=self.player_sprite, gravity_constant=GRAVITY, platforms=self.scene["Platforms"], walls=self.scene["Walls"]
         )
 
     def create_platform(self, y_axis: int, x_axis: int, quantity: tuple):
@@ -126,18 +118,18 @@ class Game(arcade.Window):
     def on_key_press(self, key, modifiers):
         if key == arcade.key.UP or key == arcade.key.W:
             if self.physics_engine.can_jump():
-                self.player_sprite_test.move_up()
+                self.player_sprite.move_up()
                 arcade.play_sound(self.jump_sound)
         elif key == arcade.key.LEFT or key == arcade.key.A:
-            self.player_sprite_test.move_left()
+            self.player_sprite.move_left()
         elif key == arcade.key.RIGHT or key == arcade.key.D:
-            self.player_sprite_test.move_right()
+            self.player_sprite.move_right()
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.LEFT or key == arcade.key.A:
-            self.player_sprite_test.stop_move_left()
+            self.player_sprite.stop_move_left()
         elif key == arcade.key.RIGHT or key == arcade.key.D:
-            self.player_sprite_test.stop_move_right()
+            self.player_sprite.stop_move_right()
 
     # def on_key_press(self, key, modifiers):
     #     if key == arcade.key.UP or key == arcade.key.W:
@@ -146,7 +138,7 @@ class Game(arcade.Window):
     #             arcade.play_sound(self.jump_sound)
     #     elif key == arcade.key.LEFT or key == arcade.key.A:
     #         self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
-    #         self.player_sprite_test.move_right()
+    #         self.player_sprite.move_right()
     #     elif key == arcade.key.RIGHT or key == arcade.key.D:
     #         self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
     
