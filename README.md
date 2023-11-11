@@ -35,3 +35,4 @@ ___
 
 ## TODO:
 - Refactor camera
+- Platform implementation
