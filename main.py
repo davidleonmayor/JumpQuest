@@ -12,7 +12,6 @@ class Game(arcade.Window):
         # Sprites
         self.scene = None
         self.player_sprite = None
-        #self.next_platform_height = 200
         self.platforms = None
 
         # Physics
@@ -28,7 +27,6 @@ class Game(arcade.Window):
 
         # Songs
         self.puwerup_sound = arcade.load_sound(":resources:sounds/upgrade1.wav")
-
         arcade.set_background_color((22, 107, 193))
 
     def setup(self):
