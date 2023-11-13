@@ -1,7 +1,7 @@
 # sprite player image path
 IMAGE_PATH = ":resources:images/animated_characters/zombie/zombie_idle.png"
 # jump sound
-JUMP_SOUND = ""
+JUMP_SOUND = ":resources:sounds/jump1.wav"
 
 # size player
 CHARACTER_SCALING = 1

@@ -10,9 +10,9 @@ class Game(arcade.Window):
         super().__init__(width=SCREEN_WIDTH, height=SCREEN_HEIGHT, title=SCREEN_TITLE)
 
         # Sprites
-        self.player_sprite = None
         self.scene = None
-        self.next_platform_height = 200
+        self.player_sprite = None
+        #self.next_platform_height = 200
         self.platforms = None
 
         # Physics
@@ -27,7 +27,6 @@ class Game(arcade.Window):
         self.score = 0
 
         # Songs
-        self.jump_sound = arcade.load_sound(":resources:sounds/jump1.wav")
         self.puwerup_sound = arcade.load_sound(":resources:sounds/upgrade1.wav")
 
         arcade.set_background_color((22, 107, 193))
@@ -40,9 +39,6 @@ class Game(arcade.Window):
         self.scene.add_sprite_list("Platforms", use_spatial_hash=True)
         self.scene.add_sprite_list("Powerups", use_spatial_hash=True)
 
-        # Set up the Game Camera
-        self.camera = arcade.Camera(self.width, self.height)
-
         # Add player sprite
         self.player_sprite = PlayerSprite()
         self.scene.add_sprite("Player", self.player_sprite)
@@ -51,6 +47,9 @@ class Game(arcade.Window):
         self.platforms = PlatformSprite(self.scene)
         self.platforms.create_wall()
         self.platforms.create_platforms()
+
+        # Set up the Game Camera
+        self.camera = arcade.Camera(self.width, self.height)
 
         # Set up the physics engine
         self.physics_engine = arcade.PhysicsEnginePlatformer(
@@ -66,7 +65,7 @@ class Game(arcade.Window):
         self.physics_engine.update()
         self.center_camera_to_player()
         self.platforms.new_row_plarforms(self.player_sprite)
-        
+
     def center_camera_to_player(self):
         screen_center_y = self.player_sprite.center_y - (self.camera.viewport_height / 2)
         if screen_center_y < 0:
@@ -77,8 +76,8 @@ class Game(arcade.Window):
     def on_key_press(self, key, modifiers):
         if key == arcade.key.UP or key == arcade.key.W:
             if self.physics_engine.can_jump():
-                self.player_sprite.move_up()
-                arcade.play_sound(self.jump_sound)
+                self.player_sprite.jump()
+                arcade.play_sound(self.player_sprite.jump_sound())
         elif key == arcade.key.LEFT or key == arcade.key.A:
             self.player_sprite.move_left()
         elif key == arcade.key.RIGHT or key == arcade.key.D:
