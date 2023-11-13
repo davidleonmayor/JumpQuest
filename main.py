@@ -1,22 +1,8 @@
 import arcade
-import random
-
 from sprites.Player import PlayerSprite
 from sprites.Platform import PlatformSprite
-
-# Windows properties
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 650
-SCREEN_TITLE = "Jump quest"
-
-# Scale constants
-CHARACTER_SCALING = 1
-TILE_SCALING = 0.5
-
-# Movement speed of player, in pixels per frame
-PLAYER_MOVEMENT_SPEED = 8
-GRAVITY = 1
-PLAYER_JUMP_SPEED = 22
+from constants.enviroment import *
+from constants.physics import GRAVITY
 
 class Game(arcade.Window):
     def __init__(self):
@@ -79,17 +65,18 @@ class Game(arcade.Window):
     def on_update(self, delta_time):
         self.physics_engine.update()
         self.center_camera_to_player()
-        self.add_platform()
-        # check if player collides with powerup
-        poweup_hit_list = arcade.check_for_collision_with_list(
-            self.player_sprite, self.scene["Powerups"]
-        )
-        # Loop through each powerup we hit and remove it
-        for powerup in poweup_hit_list:
-            # Remove the coin
-            powerup.remove_from_sprite_lists()
-            # Play a sound
-            arcade.play_sound(self.puwerup_sound)
+        self.platforms.new_row_plarforms(self.player_sprite)
+        # self.add_platform() 
+        # # check if player collides with powerup
+        # poweup_hit_list = arcade.check_for_collision_with_list(
+        #     self.player_sprite, self.scene["Powerups"]
+        # )
+        # # Loop through each powerup we hit and remove it
+        # for powerup in poweup_hit_list:
+        #     # Remove the coin
+        #     powerup.remove_from_sprite_lists()
+        #     # Play a sound
+        #     arcade.play_sound(self.puwerup_sound)
 
     def center_camera_to_player(self):
         screen_center_y = self.player_sprite.center_y - (self.camera.viewport_height / 2)
@@ -114,24 +101,24 @@ class Game(arcade.Window):
         elif key == arcade.key.RIGHT or key == arcade.key.D:
             self.player_sprite.stop_move_right()
 
-    def create_platform(self, y_axis: int, x_axis: int, quantity: tuple):
-        x_movement_block_size = 0
-        for _ in range(quantity[0], quantity[1]+1):
-            platform = arcade.Sprite(":resources:images/tiles/grassMid.png", TILE_SCALING)
-            platform.center_x = x_axis + x_movement_block_size
-            platform.center_y = y_axis
-            self.scene.add_sprite("Platforms", platform)
-            x_movement_block_size += platform.width
+    # def create_platform(self, y_axis: int, x_axis: int, quantity: tuple):
+    #     x_movement_block_size = 0
+    #     for _ in range(quantity[0], quantity[1]+1):
+    #         platform = arcade.Sprite(":resources:images/tiles/grassMid.png", TILE_SCALING)
+    #         platform.center_x = x_axis + x_movement_block_size
+    #         platform.center_y = y_axis
+    #         self.scene.add_sprite("Platforms", platform)
+    #         x_movement_block_size += platform.width
 
-    def add_platform(self):
-        self.platforms.new_row_plarforms(self.player_sprite)
+    # def add_platform(self):
+    #     self.platforms.new_row_plarforms(self.player_sprite)
 
-        # Probability of a powerup being generated 2/10
-        # if random.randint(1, 10) <= 1:
-        #     powerup = arcade.Sprite(":resources:images/items/star.png", TILE_SCALING)
-        #     powerup.center_x = init_x+100
-        #     powerup.center_y = quantity_y+100
-        #     self.scene.add_sprite("Powerups", powerup)
+    #     # Probability of a powerup being generated 2/10
+    #     # if random.randint(1, 10) <= 1:
+    #     #     powerup = arcade.Sprite(":resources:images/items/star.png", TILE_SCALING)
+    #     #     powerup.center_x = init_x+100
+    #     #     powerup.center_y = quantity_y+100
+    #     #     self.scene.add_sprite("Powerups", powerup)
 
 def main():
     window = Game()

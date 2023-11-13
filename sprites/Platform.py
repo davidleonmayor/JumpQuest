@@ -1,5 +1,7 @@
 from arcade import Sprite
-from constants.physics import *
+# from constants import physics
+from constants import plarform
+from constants import enviroment
 import random
 
 class PlatformSprite(Sprite):
@@ -17,30 +19,30 @@ class PlatformSprite(Sprite):
     ]
 
     def __init__(self, scene):
-        self.TILE_SCALING = 0.5
-        self.SCREEN_HEIGHT = 650
-        self.SCREEN_WIDTH = 1000
+        self.SCREEN_HEIGHT = enviroment.SCREEN_HEIGHT
+        self.SCREEN_WIDTH = enviroment.SCREEN_WIDTH
+        self.TILE_SCALING = plarform.TILE_SCALING
         super().__init__(":resources:images/tiles/grassMid.png", self.TILE_SCALING)
         self.sprite = None
         self.scene = scene
 
     # Create initial walls
     def create_wall(self):
-        for x_position in range(0, self.SCREEN_WIDTH, 32):
+        jump_block_size = 32
+        for x_position in range(0, self.SCREEN_WIDTH, jump_block_size):
             wall = Sprite(":resources:images/tiles/grassMid.png", self.TILE_SCALING)
             wall.center_x = x_position
             wall.center_y = 32
             self.scene.add_sprite("Walls", wall)
 
     # Add walls
-    def create_platforms(self):
-        # Adding initial platforms from bottom to top
+    # Adding initial platforms from bottom to top
+    def create_platforms(self) -> None:
         for y_position in range(32, self.SCREEN_HEIGHT, 200):  # 32 is the height of the first platform
             quantity_x = random.randint(self.SCREEN_WIDTH/2-230, self.SCREEN_WIDTH/2+230) # random x axis position. (repeating code, fix it)
             self.create_platform(y_axis=y_position, x_axis=quantity_x, quantity=(2, 4))
 
     def new_row_plarforms(self, player_sprite) -> None:
-        # TODO: get sprite player and check if is above the next platform
         posicion_y = player_sprite.center_y
         next_platform_height = 200
         if posicion_y > next_platform_height: # IF player is above the next platform
