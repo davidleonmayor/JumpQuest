@@ -28,8 +28,7 @@ class PlatformSprite(Sprite):
 
     # Create initial walls
     def create_wall(self):
-        jump_block_size = 32
-        for x_position in range(0, self.SCREEN_WIDTH, jump_block_size):
+        for x_position in range(32, self.SCREEN_WIDTH, 64): # 32 because it shows from the middle of the block, 64 is each width of the wall
             wall = Sprite(":resources:images/tiles/grassMid.png", self.TILE_SCALING)
             wall.center_x = x_position
             wall.center_y = 32
