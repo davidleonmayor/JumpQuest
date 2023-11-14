@@ -43,6 +43,7 @@ class Game(arcade.Window):
 
         # Initialize platforms
         self.platforms = PlatformSprite(self.scene)
+        self.scene.add_sprite_list("Platforms", self.platforms)
         self.platforms.create_wall()
         self.platforms.create_platforms()
 
