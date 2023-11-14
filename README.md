@@ -15,20 +15,20 @@ ___
 
 ## Developmen
 ### Iteration #1
-### Requirements
+#### Requirements
 - Player
 - Platforms
 
-## Arquitecture
+#### Arquitecture
 **Player**
 1. Functinality
-    - the player have a left, right and jump movements
-    - engraving
-    - life player and damage in his life
+    [x] the player have a left, right and jump movements
+    [x] engraving
+    [] life player and damage in his life
 
 **Platform**
 2. Functinality
-    - zise block
-    - no mivement, static
+    [x] zise block
+    [x] no mivement, static
 We will have a matrix containing a row of platforms, which will be added each time the user goes up n amount of height on the y-axis. After the player climbs n amount, the last platform will be removed.
 ___
