@@ -30,9 +30,5 @@ ___
 2. Functinality
     - zise block
     - no mivement, static
-
+We will have a matrix containing a row of platforms, which will be added each time the user goes up n amount of height on the y-axis. After the player climbs n amount, the last platform will be removed.
 ___
-
-## TODO:
-- Refactor camera
-- Platform implementation

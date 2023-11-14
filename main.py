@@ -61,6 +61,12 @@ class Game(arcade.Window):
         self.camera.use()
 
     def on_update(self, delta_time):
+        # self.scene.update_animation(delta_time)
+        # dead player if the player fell by more than N pixel high
+        if self.player_sprite.last_y_position() - self.player_sprite.y_position() > 500:
+            # if not self.player_sprite.is_life():
+            print("Player is dead", end="\n\n")
+            # arcade.close_window()
         self.physics_engine.update()
         self.center_camera_to_player()
         self.platforms.new_row_plarforms(self.player_sprite)
