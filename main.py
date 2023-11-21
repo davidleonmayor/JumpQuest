@@ -30,12 +30,13 @@ class Game(arcade.Window):
         arcade.set_background_color((22, 107, 193))
 
     def setup(self):
+        ''''''
         # Set up the Game Scene
         self.scene = arcade.Scene()
-        self.scene.add_sprite_list("Player")
-        self.scene.add_sprite_list("Walls", use_spatial_hash=True)
-        self.scene.add_sprite_list("Platforms", use_spatial_hash=True)
-        self.scene.add_sprite_list("Powerups", use_spatial_hash=True)
+        # self.scene.add_sprite_list("Player")
+        # self.scene.add_sprite_list("Walls", use_spatial_hash=True)
+        # self.scene.add_sprite_list("Platforms", use_spatial_hash=True)
+        # self.scene.add_sprite_list("Powerups", use_spatial_hash=True)
 
         # Add player sprite
         self.player_sprite = PlayerSprite()
@@ -45,14 +46,17 @@ class Game(arcade.Window):
         self.platforms = PlatformSprite(self.scene)
         self.scene.add_sprite_list("Platforms", self.platforms)
         self.platforms.create_wall()
-        self.platforms.create_platforms()
+        self.platforms.create_platforms() # add platforms form bottom to top
 
         # Set up the Game Camera
         self.camera = arcade.Camera(self.width, self.height)
 
         # Set up the physics engine
         self.physics_engine = arcade.PhysicsEnginePlatformer(
-            player_sprite=self.player_sprite, gravity_constant=GRAVITY, platforms=self.scene["Platforms"], walls=self.scene["Walls"]
+            player_sprite=self.player_sprite,
+            gravity_constant=GRAVITY,
+            platforms=self.scene["Platforms"],
+            walls=self.scene["Walls"]
         )
 
     def on_draw(self):
@@ -64,14 +68,14 @@ class Game(arcade.Window):
         # self.scene.update_animation(delta_time)
         self.player_sprite.update_life()
         if self.player_sprite.is_life():
-            pass
+            self.player_sprite.update_animation()
         else:
             arcade.close_window()
 
+        # update map
         self.physics_engine.update()
         self.center_camera_to_player()
-        # update_map()
-        self.platforms.new_row_plarforms(self.player_sprite)
+        self.platforms.new(self.player_sprite)
 
     def center_camera_to_player(self):
         screen_center_y = self.player_sprite.center_y - (self.camera.viewport_height / 2)
@@ -79,6 +83,10 @@ class Game(arcade.Window):
             screen_center_y = 0
         player_centered = self.center_camera_x_axi, screen_center_y
         self.camera.move_to(player_centered)
+
+        # if last platform isn't visible, remove it
+        if self.scene["Platforms"][0].center_y < screen_center_y - 300: # If the last platform is at a distance of n pixels or more from the player
+            self.platforms.remove(0)
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.UP or key == arcade.key.W:
